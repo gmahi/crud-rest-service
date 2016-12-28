@@ -1,5 +1,6 @@
 sap.ui.define([
 		"sapui5/demo/restservice/controller/BaseController",
+		"sapui5/demo/restservice/model/formatter",
 		"sapui5/demo/restservice/model/types",
 		"sap/ui/model/json/JSONModel",
 		"sap/m/MessageToast"
