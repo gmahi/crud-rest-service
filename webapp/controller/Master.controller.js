@@ -1,6 +1,6 @@
 sap.ui.define([
-		"sapui5/demo/restservice/controller/BaseController"
-	], function (BaseController) {
+	"sapui5/demo/restservice/controller/BaseController"
+], function(BaseController) {
 	"use strict";
 
 	return BaseController.extend("sapui5.demo.restservice.controller.Master", {
@@ -13,10 +13,11 @@ sap.ui.define([
 		 * Called when the worklist controller is instantiated.
 		 * @public
 		 */
-		onInit : function () {
-            // nothing to do at the moment
-            
-            
+		onInit: function() {
+			// nothing to do at the moment
+			this._IDSorter = new sap.ui.model.Sorter("id", false);
+			this._NameSorter = new sap.ui.model.Sorter("Name", false);
+
 		},
 
 		/**
@@ -24,9 +25,29 @@ sap.ui.define([
 		 * @param {sap.ui.base.Event} oEvent the table selectionChange event
 		 * @public
 		 */
-		onListPress : function (oEvent) {
+		onListPress: function(oEvent) {
 			// The source is the list item that got pressed
 			this._showObject(oEvent.getSource());
+		},
+
+		/**
+		 * Sorts the products table after ID
+		 * @function
+		 */
+
+		onSortID: function() {
+			this._IDSorter.bDescending = !this._IDSorter.bDescending;
+			this.byId("table").getBinding("items").sort(this._IDSorter);
+
+		},
+
+		/**
+		 * Sorts the products table after name
+		 * @function
+		 */
+		onSortName: function() {
+			this._NameSorter.bDescending = !this._NameSorter.bDescending;
+			this.byId("table").getBinding("items").sort(this._NameSorter);
 		},
 
 		/**
@@ -35,15 +56,15 @@ sap.ui.define([
 		 *
 		 * @public
 		 */
-		
+
 		// TODO - we don't need FLP stuff...
-		onNavBack : function () {
-				// The history contains a previous entry
-				window.history.go(-1);
-			
+		onNavBack: function() {
+			// The history contains a previous entry
+			window.history.go(-1);
+
 		},
-		
-		onAddSupplier : function(){
+
+		onAddSupplier: function() {
 			this.getRouter().navTo("edit");
 		},
 
@@ -57,7 +78,7 @@ sap.ui.define([
 		 * @param {sap.m.ObjectListItem} oItem selected Item
 		 * @private
 		 */
-		_showObject : function (oItem) {
+		_showObject: function(oItem) {
 			var oBindingContext = oItem.getBindingContext();
 			this.getRouter().navTo("detail", {
 				id: oBindingContext.getPath().substr(1)
