@@ -100,6 +100,12 @@ sap.ui.define([
 			oBinding.filter(this._aFilters);
 		},
 
+		onGroupByCountry: function() {
+			// sortfirst,asonlyadjacentrowscanbegrouped
+			var oSorter = new Sorter("Address/Country", false, true);
+			this.byId("table").getBinding("items").sort(oSorter);
+		},
+
 		/**
 		 * Navigates back in the browser history, if the entry was created by this app.
 		 * If not, it navigates to the Fiori Launchpad home page

@@ -1,13 +1,14 @@
 <mvc:View controllerName="sapui5.demo.restservice.controller.Master" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m">
 	<Page id="page" navButtonPress="onNavBack" showNavButton="true" title="{i18n>masterViewTitle}">
 		<content>
-			<Table id="table" width="auto" class="sapUiResponsiveMargin" items="{path: '/', sorter: { path:'id' }}" noDataText="{i18n>tableNoDataText}"
-				growing="true" growingScrollToLoad="true">
+			<Table id="table" width="auto" class="sapUiResponsiveMargin" items="{path: '/', sorter: { path:'Address/Country', group:true}}"
+				noDataText="{i18n>tableNoDataText}" growing="true" growingScrollToLoad="true">
 				<headerToolbar>
 					<Toolbar>
 						<Title id="tableHeader" text="Suppliers List"/>
-						<CheckBox id="cbProducts" text="{i18n>filterSuppliers}" select="onFilterSuppliers" />
-						<CheckBox id="cbCountry" text="{i18n>filterSuppliersForCountry}" select="onFilterSuppliers" />
+						<CheckBox id="cbProducts" text="{i18n>filterSuppliers}" select="onFilterSuppliers"/>
+						<CheckBox id="cbCountry" text="{i18n>filterSuppliersForCountry}" select="onFilterSuppliers"/>
+						<Button icon="sap-icon://group-2" id="btnGroup" text="{i18n>btnGroupByCountry}" press="onGroupByCountry"/>
 						<ToolbarSpacer/>
 						<Button icon="sap-icon://add" tooltip="[i18n>btnAddSupplier}" press="onAddSupplier"></Button>
 					</Toolbar>
