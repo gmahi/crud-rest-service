@@ -1,6 +1,9 @@
 sap.ui.define([
-	"sapui5/demo/restservice/controller/BaseController"
-], function(BaseController) {
+	"sapui5/demo/restservice/controller/BaseController",
+	"sap/ui/model/Sorter",
+	"sap/ui/model/Filter",
+	"sap/ui/model/FilterOperator"
+], function(BaseController, Sorter, Filter, FilterOperator) {
 	"use strict";
 
 	return BaseController.extend("sapui5.demo.restservice.controller.Master", {
@@ -17,7 +20,21 @@ sap.ui.define([
 			// nothing to do at the moment
 			this._IDSorter = new sap.ui.model.Sorter("id", false);
 			this._NameSorter = new sap.ui.model.Sorter("Name", false);
+			this._suppliersFilter = new Filter({
+				path: "products",
+				test: function(value) {
+					if (value && value.length > 0) {
+						return true;
+					}
+				}
+			});
 
+			this._countryFilter = new Filter({
+				path: "Address/Country",
+				operator: sap.ui.model.FilterOperator.EQ,
+				value1: "USA"
+			});
+			this._aFilters = [];
 		},
 
 		/**
@@ -48,6 +65,39 @@ sap.ui.define([
 		onSortName: function() {
 			this._NameSorter.bDescending = !this._NameSorter.bDescending;
 			this.byId("table").getBinding("items").sort(this._NameSorter);
+		},
+
+		onFilterSuppliers: function(oEvent) {
+			var oFilter,
+				bAdd = oEvent.getParameter("selected"),
+				oTable = this.getView().byId("table"),
+				oTableBinding = oTable.getBinding("items");
+
+			if (oEvent.getSource().sId === this.createId("cbProducts")) {
+				//the checkbox was selected and we should apply the filter
+				/*	this._aFilters.push(this._suppliersFilter);
+					oTableBinding.filter(this._aFilters);*/
+				oFilter = this._suppliersFilter;
+			} else {
+				//the checkbox was unselected, so we unset the filter
+				/*	oTableBinding.aFilters = null;
+					oTable.getModel().refresh(true);*/
+				oFilter = this._countryFilter;
+
+			}
+			this._changeFilters(oFilter, oTableBinding, bAdd);
+		},
+
+		_changeFilters: function(oFilter, oBinding, bAdd) {
+			if (bAdd) {
+				this._aFilters.push(oFilter);
+			} else {
+				//using the native JavaScript function Array.prototype.filterhere:
+				this._aFilters = this._aFilters.filter(function(filter) {
+					return filter.sPath !== oFilter.sPath;
+				});
+			}
+			oBinding.filter(this._aFilters);
 		},
 
 		/**

@@ -6,6 +6,8 @@
 				<headerToolbar>
 					<Toolbar>
 						<Title id="tableHeader" text="Suppliers List"/>
+						<CheckBox id="cbProducts" text="{i18n>filterSuppliers}" select="onFilterSuppliers" />
+						<CheckBox id="cbCountry" text="{i18n>filterSuppliersForCountry}" select="onFilterSuppliers" />
 						<ToolbarSpacer/>
 						<Button icon="sap-icon://add" tooltip="[i18n>btnAddSupplier}" press="onAddSupplier"></Button>
 					</Toolbar>
